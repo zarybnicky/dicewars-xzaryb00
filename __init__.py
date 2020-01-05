@@ -25,10 +25,10 @@ class AI:
             )), attack)
             for attack in possible_attacks(board, self.player_name)
         )
-        # P(hold source) > 80%
-        attacks = filter(lambda x: x[0][0] > .5, attacks)
+        # P(hold source) > 50%
+        attacks = filter(lambda x: x[0][0] > .4, attacks)
         # sort by P(hold target)
-        attacks = sorted(attacks, key=lambda x: x[0][1])
+        attacks = sorted(attacks, key=lambda x: x[0][0] * x[0][1], reverse=True)
 
         if attacks:
             attack = attacks[0]

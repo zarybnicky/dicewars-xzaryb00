@@ -16,7 +16,7 @@ class RecordingGame(Game):
     def attack(self, atk_name, def_name):
         features = get_features(self.board, atk_name, def_name)
         atk_owner = features[2][0]
-        self.attacks.setdefault(self.turn_counter + len(self.players_order) * 2, []).append(features)
+        self.attacks.setdefault(self.turn_counter + len(self.players_order), []).append(features)
 
     def flush_attacks(self):
         new_attacks = {}
