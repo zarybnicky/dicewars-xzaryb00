@@ -1,6 +1,7 @@
 import logging
 import torch
 import torch.nn as nn
+from os.path import dirname
 
 from dicewars.client.ai_driver import BattleCommand, EndTurnCommand
 from ..utils import possible_attacks
@@ -15,7 +16,7 @@ class AI:
             nn.PReLU(),
             nn.Linear(8, 2),
         )
-        self.model.load_state_dict(torch.load('local-predictor.model'))
+        self.model.load_state_dict(torch.load(dirname(__file__) + '/local-predictor.model'))
         self.model.eval()
 
     def ai_turn(self, board, nb_moves_this_turn, nb_turns_this_game, time_left):
@@ -25,6 +26,8 @@ class AI:
             )), attack)
             for attack in possible_attacks(board, self.player_name)
         )
+        # for a in attacks:
+        #     print(a[0], get_features_client(board, a[1][0].get_name(), a[1][1].get_name())[0])
         # P(hold source) > 50%
         attacks = filter(lambda x: x[0][0] > .4, attacks)
         # sort by P(hold target)
@@ -32,5 +35,6 @@ class AI:
 
         if attacks:
             attack = attacks[0]
+            # print('Win', attack)
             return BattleCommand(attack[1][0].get_name(), attack[1][1].get_name())
         return EndTurnCommand()

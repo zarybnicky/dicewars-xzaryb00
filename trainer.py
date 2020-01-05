@@ -1,4 +1,5 @@
 import numpy as np
+from os.path import dirname
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -24,7 +25,7 @@ def main():
         nn.PReLU(),
         nn.Linear(8, 2),
     )
-    dataset = AttacksDataset('turns.csv')
+    dataset = AttacksDataset(dirname(__file__) + '/turns.csv')
     optimizer = SGD(model.parameters(), lr=0.01)
     loss_fn = nn.MSELoss(reduction='mean')
     loader = torch.utils.data.DataLoader(dataset=dataset, shuffle=True)
@@ -40,7 +41,7 @@ def main():
             optimizer.step()
         print('epoch: {}, train loss: {:.6f}'.format(epoch, total_loss))
 
-    torch.save(model.state_dict(), 'local-predictor.model')
+    torch.save(model.state_dict(), dirname(__file__) + '/local-predictor.model')
 
 if __name__ == '__main__':
     main()

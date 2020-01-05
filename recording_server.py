@@ -1,3 +1,5 @@
+from os.path import dirname
+
 from dicewars.server.game.game import Game
 from dicewars.ai.xzaryb00.utils import get_features
 
@@ -5,7 +7,7 @@ class RecordingGame(Game):
     def __init__(self, board, area_ownership, players, addr, port, nicknames_order):
         super().__init__(board, area_ownership, players, addr, port, nicknames_order)
         self.attacks = {}
-        self.handle = open('turns.csv', 'a')
+        self.handle = open(dirname(__file__) + '/turns.csv', 'a')
         self.turn_counter = 0
 
     def run(self):
